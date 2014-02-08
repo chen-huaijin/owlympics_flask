@@ -1,0 +1,32 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form action="{{ url_for('submit_create_group') }}" method=post>
+    <dl>
+        {% if newgrp %}
+                <dt>Name:
+                <dd><input type=text size=10 name=name>
+                <p> </p>
+                <dt>Description:
+                <dd><input type=text rows=3 size=50 name=desc>
+                <p> </p>
+                <input type=hidden name=thisform value="create">
+                <dt><input type=submit value=Create>
+                <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+        {% else %}
+                <dt>Name:
+                <dd><input type=text size=10 name=name value="{{thisgrp.groupname}}">
+                <p> </p>
+                <dt>Description:
+                <dd><input type=text rows=3 size=50 name=desc value="{{thisgrp.desc}}">
+                <p> </p>
+                <input type=hidden name=thisform value="update">
+                <dt><input type=submit class="btn btn-mini btn-info" value=Update>
+                <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+        {% endif %}
+    </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

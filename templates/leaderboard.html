@@ -1,0 +1,85 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="leaderboard">
+      <dl>
+
+        <p> </p>
+        <p> </p>
+        <table border="0" align="center" style="table-layout:fixed;">
+        <tr>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_own_group.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_individual.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_vs_group.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_vs_group.png" width="70" height="80"></td>
+        </tr>
+        <tr>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_gm') }}">Athletes in your group</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_am') }}">Athletes in OWLympics</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_gt') }}">Groups (total points)</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_ga') }}">Groups (avg points)</a></td>
+        </tr>
+        </table>
+
+        <!--
+        <p> </p>
+        {% if groupname == "Invalid_group" %}
+        <dt>You have not joined any group.
+        {% else %}
+        <dt>Your current group is: <strong>{{groupname}}</strong>
+        <p> </p>
+        <dt>Members in your group:
+        <p> </p>
+        <table align="center" frame="box" style="table-layout:fixed;" class="table table-bordered">
+        <tr>
+                <td align="center" style="width:50px;">rank</td>
+                <td align="center" style="width:100px;">user</td>
+                <td align="center" style="width:50px;">level</td>
+                <td align="center" style="width:300px;">points earned in this week</td>
+        </tr>
+        {% set rank = 1 %}
+        {% for point in points %}
+                {% if point.username in usernames %}
+                <tr>
+                        <td align="center">{{rank}}</td>
+                        <td align="center">{{point.username}}</td>
+                        <td align="center">{{point.level}}</td>
+                        <td align="center">{{point.point}}</td>
+                </tr>
+                {% set rank = rank + 1 %}
+                {% endif %}
+        {% endfor %}
+        </table>
+        {% endif %}
+
+        <p> </p>
+        {% if groups %}
+        <dt>Group ranking in this week:
+        <p> </p>
+        <table align="center" frame="box" style="table-layout:fixed;" class="table table-bordered">
+        <tr>
+                <td align="center" style="width:50px;">rank</td>
+                <td align="center" style="width:100px;">group</td>
+                <td align="center" style="width:50px;">size</td>
+                <td align="center" style="width:300px;">total points earned in this week</td>
+        </tr>
+        {% set rank = 1 %}
+        {% for group in groups %}
+        <tr>
+                <td align="center">{{rank}}</td>
+                <td align="center">{{group.groupname}}</td>
+                <td align="center">{{group.size}}</td>
+                <td align="center">{{group.weeklypoints}}</td>
+        </tr>
+        {% set rank = rank + 1 %}
+        {% endfor %}
+        </table>
+        {% endif %}
+        -->
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

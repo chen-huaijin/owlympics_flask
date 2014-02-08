@@ -1,0 +1,133 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+<link rel=stylesheet type=text/css href="static/slideshow/slideshow.css">
+<script src="static/slideshow/slideshow.js" language="javascript"></script>
+
+{% if session.logged_in %}
+        <form id="edit_avatar" action="{{ url_for('update_avatar') }}" method=post>
+
+		<p> </p>
+		<p> </p>
+
+		<!-- All customizable components and the avatar -->
+        <table align="center" border="0">
+        <tr>
+			<td style="width:200px; text-align:center; vertical-align:middle;"></td>
+			<td style="width:200px; text-align:center; vertical-align:middle;"></td>
+			<td style="width:200px; text-align:center; vertical-align:middle;"></td>
+			<td style="width:200px; text-align:center; vertical-align:middle;"></td>
+        </tr>
+		<tr>
+			<td style="width:200px; align:center; vertical-align:middle;">
+				<div style="position:relative; width:200px; height:250px; align:center; vertical-align:middle;">
+					<div id="img_container_big">
+						<div id="owl_box_big" class="img_box">
+							{% for owl in owl_all %}
+							{% set owl_img_big_num = 1 %}
+							<img id="img{{owl_img_big_num}}" style="width:200px;" src={{owl.imagepath}}/>
+							{% set owl_img_big_num = owl_img_big_num + 1 %}
+							{% endfor %}
+							
+						</div>
+					</div>
+					<div id="img_container_big">
+						<div id="glasses_box_big" class="img_box">
+							{% for glasses in glasses_all %}
+							{% set glasses_img_big_num = 1 %}
+							<img id="img{{glasses_img_big_num}}" style="width:200px;" src={{glasses.imagepath}}/>
+							{% set glasses_img_big_num = glasses_img_big_num + 1 %}
+							{% endfor %}
+							
+						</div>
+					</div>
+				</div>
+			</td>
+			<td style="width:600px; text-align:right; vertical-align:middle;">
+				<!-- Hidden inputs and form submit button -->
+				<input id="action" type=hidden name=action value="None">
+				<input type=button class="btn btn-mini" value=Preview onclick="preview_avatar();" />
+				<p> </p>
+				<input type=button class="btn btn-mini" value=Save onclick="save_avatar();" />
+			</td>
+		</tr>
+		</table>
+
+		<table align="center" border="0">
+        <tr>
+			<td style="width:200px; text-align:center; vertical-align:middle;">Owl</td>
+			<td style="width:200px; text-align:center; vertical-align:middle;">Glasses</td>
+			<td style="width:200px; text-align:center; vertical-align:middle;">Hair</td>
+			<td style="width:200px; text-align:center; vertical-align:middle;">Accessory</td>
+        </tr>
+
+        <tr>
+			<!-- Owl template -->
+			<td style="text-align:center; vertical-align:middle;">
+				<div id="container">
+					<div id="img_container">
+						<div id="owl_box" class="img_box">
+							{% for owl in owl_all %}
+							{% set owl_img_num = 1 %}
+							<img id="img{{owl_img_num}}" style="width:100px;" src={{owl.imagepath}}/>
+							{% set owl_img_num = owl_img_num + 1 %}
+							{% endfor %}
+							<div style="clear:both;"></div>
+						</div>
+						<input id="owl_img_num" type=hidden name="owl_img_num" value=1>
+					</div>
+					<div id="navigate" class="pagination">
+						<ul>
+							<li><a href="" name="owl" id="linkfirst">&laquo;</a></li>
+							<li><a href="" name="owl" id="linkprev">&lsaquo;</a></li>
+							<li><a href="" name="owl" id="linknext">&rsaquo;</a></li>
+							<li><a href="" name="owl" id="linklast">&raquo;</a></li>
+						</ul>
+					</div>
+				</div>
+			</td>
+			<!-- Glasses -->
+			<td style="text-align:center; vertical-align:middle;">
+				<div id="container">
+					<div id="img_container">
+						<div id="glasses_box" class="img_box">
+							{% for glasses in glasses_all %}
+							{% set glasses_img_num = 1 %}
+							<img id="img{{glasses_img_num}}" style="width:100px;" src={{glasses.imagepath}}/>
+							{% set glasses_img_num = glasses_img_num + 1 %}
+							{% endfor %}
+							<div style="clear:both;"></div>
+						</div>
+						<input id="glasses_img_num" type=hidden name="glasses_img_num" value=1>
+					</div>
+					<div id="navigate" class="pagination">
+						<ul>
+							<li><a href="" name="glasses" id="linkfirst">&laquo;</a></li>
+							<li><a href="" name="glasses" id="linkprev">&lsaquo;</a></li>
+							<li><a href="" name="glasses" id="linknext">&rsaquo;</a></li>
+							<li><a href="" name="glasses" id="linklast">&raquo;</a></li>
+						</ul>
+					</div>
+				</div>
+			</td>
+        </tr>
+        </table>
+
+        <script language="javascript" type="text/javascript">
+			function set_img_num(id, imgnumber) {
+					document.getElementById(id).value = imgnumber;
+			}
+
+			function save_avatar() {
+				if (confirm("Are you sure you want to save the current avatar setting?")) {
+						document.getElementById("edit_avatar").submit();
+				}
+				else {
+				}
+			}
+        </script>
+
+        </form>
+{% endif %}
+
+{% endblock %}

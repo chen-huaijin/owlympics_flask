@@ -1,0 +1,49 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="leaderboard_gt" method=post>
+      <dl>
+
+        <p> </p>
+        <table border="0" align="center" style="table-layout:fixed;">
+        <tr>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_own_group.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_individual.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_vs_group.png" width="70" height="80"></td>
+        <td align="center" style="width:200px;"><img src="\static\leaderboard_vs_group.png" width="70" height="80"></td>
+        </tr>
+        <tr>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_gm') }}">Athletes in your group</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_am') }}">Athletes in OWLympics</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_gt') }}">Groups (total points)</a></td>
+        <td align="center" style="width:100px;"><a href="{{ url_for('lb_ga') }}">Groups (avg points)</a></td>
+        </tr>
+        </table>
+        <p> </p>
+        {% if groups %}
+        <table align="center" class="table table-bordered">
+        <tr>
+                <td align="center" style="width:50px;">Rank</td>
+                <td align="center" style="width:100px;">Group</td>
+                <td align="center" style="width:50px;">Size</td>
+                <td align="center" style="width:100px;">Total points</td>
+        </tr>
+        {% set rank = 1 %}
+        {% for group in groups %}
+        <tr>
+                <td align="center">{{rank}}</td>
+                <td align="center"><a href="/view_group/{{group.gid}}">{{group.groupname}}</a></td>
+                <td align="center">{{group.size}}</td>
+                <td align="center">{{group.weeklypoints}}</td>
+        </tr>
+        {% set rank = rank + 1 %}
+        {% endfor %}
+        </table>
+        {% endif %}
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h4>Password recovery</h4>
+  <form action="{{ url_for('recover_password') }}" method=post>
+    <dl>
+      <dt>Type your email:
+      <dd><input type=text name=email>
+      <p> </p>
+      <dd><input type=submit class="btn btn-mini btn-info" value=Recover>
+    </dl>
+  </form>
+{% endblock %}

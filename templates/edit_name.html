@@ -1,0 +1,27 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form action="{{ url_for('update_name') }}" method=post>
+      <dl>
+        <dt><strong>Use your real name in OWLympics so that your friends can identify you!</strong>
+        <p> </p>
+        <dt>First name:
+        <dd><input type=input size=30 name=firstname value="{{profile.firstname}}">
+        <p> </p>
+        <dt>Last name:
+        <dd><input type=input size=30 name=lastname value="{{profile.lastname}}">
+        <p> </p>
+        <dt>Name preference:&nbsp;&nbsp;
+        <select name=userealname>
+                <option value="1" selected="selected">Use real name</option>
+                <option value="0">Use username</option>
+        </select>
+        <p> </p>
+        <dd><input type=submit class="btn btn-mini btn-info" value=Update>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

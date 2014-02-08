@@ -1,0 +1,248 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+<!-- tooltip -->
+<script src="static/tooltip/tooltip.js"></script>
+
+  {% if session.logged_in %}
+    <form action="{{ url_for('submit_activity') }}" method=post>
+      <dl>
+
+        {% if newact %}
+                
+				<dt><a>Date:</a>
+				<dd><select name="date" id="date">
+						<option value=0>Monday</option>
+						{% if wkd > 0 %}
+						<option value=1>Tuesday</option>
+						{% endif %}
+						{% if wkd > 1 %}
+						<option value=2>Wednesday</option>
+						{% endif %}
+						{% if wkd > 2 %}
+						<option value=3>Thursday</option>
+						{% endif %}
+						{% if wkd > 3 %}
+						<option value=4>Friday</option>
+						{% endif %}
+						{% if wkd > 4 %}
+						<option value=5>Saturday</option>
+						{% endif %}
+						{% if wkd > 5 %}
+						<option value=6>Sunday</option>
+						{% endif %}
+					</select>
+				<p> </p>
+                
+				<dt><a rel="tooltip" title="Name of your activity">Activity:</a>
+				<dd>
+					<div>
+					<select id="activity" name="activity" onchange="show_new_activity(this.value)">
+						{% for activity in activity_type %}
+						<option value={{activity.name}}>{{activity.name}}</option>
+						{% endfor %}
+						<option value="New">New (enter the name below)</option>
+					</select>
+					<p> </p>
+					<input type="text" id="new_activity" size=30 name="new_activity" style="display:block;">
+					<script>
+						function show_new_activity(act) {
+							if (act == "New") {
+								document.getElementById("new_activity").style.display = 'block';
+							}
+							else {
+								document.getElementById("new_activity").style.display = 'block';
+							}	
+						}
+					</script>
+					</div>
+				<p> </p>
+
+                <dt><a>Approximated start time:</a>
+				<dd><select name="time" id="time">
+						<option value=0>12:00</option>
+						<option value=1>12:30</option>
+						<option value=2>01:00</option>
+						<option value=3>01:30</option>
+						<option value=4>02:00</option>
+						<option value=5>02:30</option>
+						<option value=6>03:00</option>
+						<option value=7>03:30</option>
+						<option value=8>04:00</option>
+						<option value=9>04:30</option>
+						<option value=10>05:00</option>
+						<option value=11>05:30</option>
+						<option value=12>06:00</option>
+						<option value=13>06:30</option>
+						<option value=14>07:00</option>
+						<option value=15>07:30</option>
+						<option value=16>08:00</option>
+						<option value=17>08:30</option>
+						<option value=18>09:00</option>
+						<option value=19>09:30</option>
+						<option value=20>10:00</option>
+						<option value=21>10:30</option>
+						<option value=22>11:00</option>
+						<option value=23>11:30</option>
+					</select>
+					<!--
+					<div class="input-group">
+						<span class="input-group-addon">
+							<input type="radio" name="ampm" value=0>am
+							<input type="radio" name="ampm" value=1 checked>pm
+						</span>
+					</div>
+					-->
+					<input type="radio" name="ampm" value=0>am
+					<input type="radio" name="ampm" value=1 checked>pm
+				<p> </p>
+                
+				<dt><a rel="tooltip" title="Intesnsity of your activity">Intensity (minutes):</a>
+                <dd>Low: <input type=text size=1 name=low>
+                       Moderate: <input type=text size=1 name=moderate>
+                       High: <input type=text size=1 name=high>
+                <p> </p>
+
+                <dt><a>Number of participants (not including you):</a>
+                <dd><input type=text size=1 name=ppl>
+                <p> </p>
+
+                <dt><a>Note about this activity (optional):</a>
+                <dd><textarea rows=5 cols=50 name=note></textarea>
+                <p> </p>
+				
+				<dt><a rel="tooltip" title="Your mood during this activity">How do you feel about this activity:</a>
+				<dd>
+				<div>
+					<a rel="tooltip" title="How positive or negative you feel about this activity">Happiness (from unhappy to happy):</a>
+					<br></br>
+					<input id="happiness" style="width:400px;" name="happiness" type="range" min="1" max="5" step="1" value="3" onchange="select_rate(this.value)"/>
+					<script>
+					function select_value(value) {
+						document.getElementById("happiness").value = value;
+					}
+					</script>
+				</div>
+				<div>
+					<a rel="tooltip" title="Whether you are likely to take an action after this activity">Activeness (from passive to active):</a>
+					<br></br>
+					<input id="activeness" style="width:400px;" name="activeness" type="range" min="1" max="5" step="1" value="3" onchange="select_rate(this.value)"/>
+					<script>
+					function select_value(value) {
+						document.getElementById("activeness").value = value;
+					}
+					</script>
+				</div>
+                
+				<input type=hidden name=thisform value="report">
+                <dt><input type=submit class="btn btn-mini btn-info" value=Report>
+        
+		{% else %}
+
+                <dt><a>Date:</a>
+				<dd><select name="date" id="date">
+						<option value=0>Monday</option>
+						{% if wkd > 0 %}
+						<option value=1>Tuesday</option>
+						{% endif %}
+						{% if wkd > 1 %}
+						<option value=2>Wednesday</option>
+						{% endif %}
+						{% if wkd > 2 %}
+						<option value=3>Thursday</option>
+						{% endif %}
+						{% if wkd > 3 %}
+						<option value=4>Friday</option>
+						{% endif %}
+						{% if wkd > 4 %}
+						<option value=5>Saturday</option>
+						{% endif %}
+						{% if wkd > 5 %}
+						<option value=6>Sunday</option>
+						{% endif %}
+					</select>
+				<p> </p>
+
+                <dt><a rel="tooltip" title="Name of your activity">Activity:</a>
+                <dd><input type="text" size=30 name="activity" value="{{thisact.activity}}">
+                <p> </p>
+
+				<dt><a>Approximated start time:</a>
+				<dd><select name="time" id="time">
+						<option value=0>12:00</option>
+						<option value=1>12:30</option>
+						<option value=2>01:00</option>
+						<option value=3>01:30</option>
+						<option value=4>02:00</option>
+						<option value=5>02:30</option>
+						<option value=6>03:00</option>
+						<option value=7>03:30</option>
+						<option value=8>04:00</option>
+						<option value=9>04:30</option>
+						<option value=10>05:00</option>
+						<option value=11>05:30</option>
+						<option value=12>06:00</option>
+						<option value=13>06:30</option>
+						<option value=14>07:00</option>
+						<option value=15>07:30</option>
+						<option value=16>08:00</option>
+						<option value=17>08:30</option>
+						<option value=18>09:00</option>
+						<option value=19>09:30</option>
+						<option value=20>10:00</option>
+						<option value=21>10:30</option>
+						<option value=22>11:00</option>
+						<option value=23>11:30</option>
+					</select>
+					<input type="radio" name="ampm" value=0>am
+					<input type="radio" name="ampm" value=1 checked>pm
+				<p> </p>
+
+                <dt><a rel="tooltip" title="Intesnsity of your activity">Intensity (minutes):</a>
+                <dd>Low: <input type=text size=1 name=low value={{thisact.low}}>
+                    Moderate: <input type=text size=1 name=moderate value={{thisact.moderate}}>
+                    High: <input type=text size=1 name=high value={{thisact.high}}>
+                <p> </p>               
+
+                <dt><a>Number of participants (not including you):</a>
+                <dd><input type=text size=1 name=ppl value={{thisact.ppl}}>
+                <p> </p>
+
+                <dt><a>Note about this activity (optional):</a>
+                <dd><textarea rows=5 cols=50 name=note>{{thisact.note}}</textarea>
+                <p> </p>
+
+				<dt><a rel="tooltip" title="Your mood during this activity">How do you feel about this activity:</a>
+				<dd>
+				<div>
+					<a rel="tooltip" title="How positive or negative you feel about this activity">Happiness (from unhappy to happy):</a>
+					<br></br>
+					<input id="happiness" style="width:400px;" name="happiness" type="range" min="1" max="5" step="1" value="{{thisact.happiness}}" onchange="select_rate(this.value)"/>
+					<script>
+					function select_value(value) {
+						document.getElementById("happiness").value = value;
+					}
+					</script>
+				</div>
+				<div>
+					<a rel="tooltip" title="Whether you are likely to take an action after this activity">Activeness (from passive to active):</a>
+					<br></br>
+					<input id="activeness" style="width:400px;" name="activeness" type="range" min="1" max="5" step="1" value="{{thisact.activeness}}" onchange="select_rate(this.value)"/>
+					<script>
+					function select_value(value) {
+						document.getElementById("activeness").value = value;
+					}
+					</script>
+				</div>
+
+                <input type=hidden name=thisform value="update">
+                <dt><input type=submit class="btn btn-mini btn-info" value=Update>
+                <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+        
+		{% endif %}
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

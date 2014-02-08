@@ -1,0 +1,19 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+  <form method=post>
+      <dl>
+        <a href="{{ url_for('manage_group') }}">Manage group</a>
+        <p> </p>
+        <a href="{{ url_for('edit_profile') }}">Change password</a>
+        <p> </p>
+        <a href="{{ url_for('edit_name') }}">Name setting</a>
+        <p> </p>
+        <a href="{{ url_for('edit_avatar') }}">Customize avatar</a>
+        <p> </p>
+      </dl>
+  </form>
+  {% endif %}
+
+{% endblock %}

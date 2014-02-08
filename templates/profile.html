@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+        {% if session.logged_in %}
+                <p> </p>
+                <table border="0" align="center" style="table-layout:fixed;">
+                <tr>
+                <td align="left" style="width:100px;"><input type=button class="btn btn-small btn-info" onclick="location.href='{{ url_for('home') }}'" value="Home"></td>
+                <td align="center" style="width:250px;"><input type=button class="btn btn-small btn-info" onclick="location.href='{{ url_for('leaderboard') }}'" value="Weekly leaderboard"></td>
+                {% if session.admin %}
+                <td align="center" style="width:200px;"><input type=button class="btn btn-small btn-info" onclick="location.href='{{ url_for('manage_user') }}'" value="Manage user"></td>
+                {% else %}
+                <td align="center" style="width:200px;"><input type=button class="btn btn-small btn-info" onclick="location.href='{{ url_for('report_activity') }}'" value="Report activity"></td>
+                {% endif %}
+                <td align="right" style="width:150px;" ><input type=button class="btn btn-small btn-info" onclick="location.href='{{ url_for('edit_activity') }}'" value="Edit activity"></td>
+                </tr>
+                </table>
+        {% endif %}
+
+        <!-- Extended by the respective links above-->
+        {% block profile %}
+        {% endblock %}
+
+        {% if activities %}
+                <h4>Recent activities from all</h4>
+                <ul class=entries>
+                {% for activity in activities %}
+                        {% if activity.userealname %}
+                                <li>{{activity.month}}/{{activity.day}}/{{activity.year}}: <a href="/view_username/{{activity.username}}">{{activity.realname}}</a> earned <strong>{{activity.newpoints}}</strong> points through <a href="/view_activity/{{activity.aid}}">{{activity.activity}}</a>
+                        {% else %}
+                                <li>{{activity.month}}/{{activity.day}}/{{activity.year}}: <a href="/view_username/{{activity.username}}">{{activity.username}}</a> earned <strong>{{activity.newpoints}}</strong> points through <a href="/view_activity/{{activity.aid}}">{{activity.activity}}</a>
+                        {% endif %}
+                {% endfor %}
+                </ul>
+        {% endif %}
+
+{% endblock %}

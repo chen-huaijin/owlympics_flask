@@ -1,0 +1,29 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form action="{{ url_for('submit_activity') }}" method=post class=add-entry>
+      <dl>
+
+        <dt>Your level is: <strong>{{userpoint.level}}</strong>
+        <p> </p>
+        <dt>Your current points are: <strong>{{userpoint.point}}</strong> (get <em>{{points_more}}</em> more points to level up!)
+        <p> </p>s
+        <dt>Activity:
+        <dd><input type=text size=30 name=activity>
+        <p> </p>
+        <dt>Intensity (minutes):
+        <dd>Low: <input type=text size=5 name=low>
+               Moderate: <input type=text size=5 name=moderate>
+               High: <input type=text size=5 name=high>
+        <p> </p>
+        <dt>Number of participants (not including you):
+        <dd><input type=text size=5 name=ppl>
+        <p> </p>
+        <dt><input type=submit value=Report>
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

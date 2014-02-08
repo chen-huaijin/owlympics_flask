@@ -1,0 +1,59 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="view_user" method=post>
+      <dl>
+        <p> </p>
+        <dt>Username: <strong>{{username}}</strong>
+        <p> </p>
+        <dt>Real name: <strong>{{realname.firstname}}&nbsp;{{realname.lastname}}</strong>
+        <p> </p>
+        <dt>Group: <strong>{{groupname}}</strong>
+        <p> </p>
+        <dt>Level: <strong>{{point.level}}</strong>
+        <p> </p>
+        <dt>Points earned in this week: <strong>{{point.point}}</strong>
+        <p> </p>
+        <dt>Activities in this week:
+        <p> </p>
+        {% if myactivities %}
+        <table align="center" class="table table-bordered">
+        <tr>
+                <td align="center" style="width:90px;">Date</td>
+                <td align="center" style="width:200px;">Activity</td>
+                <td align="center" style="width:50px;">Points</td>
+        </tr>
+        {% endif %}
+
+        {% for myactivity in myactivities %}
+        <tr>
+                <td align="center">{{myactivity.month}}/{{myactivity.day}}/{{myactivity.year}}</td>
+                <td align="center"><a href="/view_activity/{{myactivity.aid}}">{{myactivity.activity}}</a></td>
+                <td align="center">{{myactivity.newpoints}}</td>
+        </tr>
+
+        <!-- These hidden inputs are used to pass the activity id to the server-->
+        <input id="aid" type=hidden name=aid value=-1>
+
+        <script language="javascript" type="text/javascript">
+                function view_activity(aid) {
+                        document.getElementById("aid").value = aid;
+                        document.getElementById("view_user").submit();
+                }
+        </script>
+        {% endfor %}
+
+        </table>
+
+        <p> </p>
+        <a href="/view_chart/{{username}}">Compare {{username}}'s performance with yours</a>
+
+        <p> </p>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

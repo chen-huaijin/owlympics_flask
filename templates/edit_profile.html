@@ -1,0 +1,22 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form action="{{ url_for('update_profile') }}" method=post>
+      <dl>
+        <dt>Old password:
+        <dd><input type=password size=30 name=oldpassword>
+        <p> </p>
+        <dt>New password:
+        <dd><input type=password size=30 name=newpassword>
+        <p> </p>
+        <dt>Retype new password:
+        <dd><input type=password size=30 name=renewpassword>
+        <p> </p>
+        <dd><input type=submit class="btn btn-mini btn-info" value=Update>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

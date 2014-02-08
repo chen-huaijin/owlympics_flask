@@ -1,0 +1,327 @@
+<!doctype html>
+<title>OWLympics</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='cards.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='cube.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='avatar.css') }}">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="static/bootstrap.js"></script>
+<script src="static/cards.js"></script>
+
+<div class=page>
+
+        <h2>OWLympics
+                <img src="\static\owls_branch_LOGO2.png" width="120" height="50" align="right" >
+                <p> </p>
+        </h2>
+
+        <div class=metanav>
+                {% if not session.logged_in %}
+                <a href="{{ url_for('login') }}">Log in</a>
+                <a>|</a>
+                <a href="{{ url_for('register') }}">Register</a>
+                {% else %}
+                <!--
+                <a href="{{ url_for('edit_name') }}">Name preference</a>
+                <a>|</a>
+                <a href="{{ url_for('manage_group') }}">Manage group</a>
+                <a>|</a>
+                <a href="{{ url_for('edit_profile') }}">Change password</a>
+                <a>|</a>
+                -->
+                <a href="{{ url_for('profile_home') }}">Profile</a>
+                <a>|</a>
+                <a href="{{ url_for('logout') }}">Log out</a>
+                {% endif %}
+        </div>
+
+        <div>
+                <!-- Button to trigger modal -->
+                <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+
+                <!-- Modal -->
+                <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Modal header</h3>
+                        </div>
+                        <div class="modal-body">
+                                <p>One fine body…</p>
+                        </div>
+                        <div class="modal-footer">
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                <button class="btn btn-primary">Save changes</button>
+                        </div>
+                </div>
+        </div>
+
+        
+        <!-- Set of cubes -->
+        <table align="center" border="0">
+                {% set rank = 0 %}
+                {% set cube_id = -1 %}
+
+                {% for activity in activities %}
+
+                        {% set rank = rank + 1 %}
+                        {% set cube_id = cube_id + 1 %}
+
+                        {% if rank == 1 %}
+                        <tr style="height:250px;">
+                        {% endif %}
+
+                        <td align="center" style="width:250px;">
+                                <div id="experiment">
+                                        <div id="cube_{{cube_id}}" class="cubetest">
+                                                <div class="face one">
+                                                </div>
+                                                <div class="face two">
+                                                        <div class="avatar" style="background-image:
+                                                                url('static/avatar/Hair/the_cure.png'), 
+                                                                url('static/avatar/Glasses/goggles.png'),
+                                                                url('static/avatar/Owls/orange_owl_template.png');">
+                                                        </div>
+                                                </div>
+                                                <div class="face three">
+                                                        Lorem ipsum.
+                                                </div>
+                                                <div class="face four">
+                                                        New forms of navigation are fun.
+                                                </div>
+                                                <div class="face five">
+                                                        Rotating 3D cube
+                                                </div>
+                                                <div class="face six">
+                                                        More content
+                                                </div>
+                                        </div>
+                                </div>
+                        </td>
+
+                        {% if rank == 3 %}
+                        </tr>
+                        {% set rank = 0 %}
+                        {% endif %}
+
+                        <script language="javascript" type="text/javascript">
+                                var xAngle_{{cube_id}} = 0, yAngle_{{cube_id}} = 0;
+                                $("#cube_{{cube_id}}").click(function() {
+                                        xAngle_{{cube_id}} += 0;
+                                        yAngle_{{cube_id}} -= 90;
+                                        $("#cube_{{cube_id}}")[0].style.webkitTransform =
+                                        "rotateX("+xAngle_{{cube_id}}+"deg) rotateY("+yAngle_{{cube_id}}+"deg)";
+                                })
+
+                                //document.getElementById('cube').onclick = function() {
+                                //        xAngle_{{cube_id}} += 0;
+                                //        yAngle_{{cube_id}} -= 90;
+                                //        $("#cube_{{cube_id}}")[0].style.webkitTransform =
+                                //        "rotateX("+xAngle_{{cube_id}}+"deg) rotateY("+yAngle_{{cube_id}}+"deg)";
+                                //}
+
+                        </script>
+                        
+                        <script language="javascript" type="text/javascript">
+                                var xAngle = 0, yAngle = 0;
+                                document.addEventListener('keydown', function(e)
+                                {
+                                        switch(e.keyCode)
+                                        {
+                                                case 37: // left
+                                                        yAngle -= 90;
+                                                        break;
+                                                case 38: // up
+                                                        xAngle += 90;
+                                                        break;
+                                                case 39: // right
+                                                        yAngle += 90;
+                                                        break;
+                                                case 40: // down
+                                                        xAngle -= 90;
+                                                        break;
+                                        };
+                                        $("#cube")[0].style.webkitTransform = "rotateX("+xAngle+"deg) rotateY("+yAngle+"deg)";
+                                }, false);
+                        </script>
+
+                {% endfor %}
+
+                </tr>
+        </table>
+
+
+
+        <!-- 3D cube -->
+<!--
+        <div id="experiment">
+                <div id="cube">
+                        <div class="face one">
+                                One face
+                        </div>
+                        <div class="face two">
+                                Up, down, left, right
+                        </div>
+                        <div class="face three">
+                                Lorem ipsum.
+                        </div>
+                        <div class="face four">
+                                New forms of navigation are fun.
+                        </div>
+                        <div class="face five">
+                                Rotating 3D cube
+                        </div>
+                        <div class="face six">
+                                More content
+                        </div>
+                </div>
+        </div>
+
+        <script language="javascript" type="text/javascript">
+                var xAngle = 0, yAngle = 0;
+                document.addEventListener('keydown', function(e)
+                {
+                        switch(e.keyCode)
+                        {
+                                case 37: // left
+                                        yAngle -= 90;
+                                        break;
+                                case 38: // up
+                                        xAngle += 90;
+                                        break;
+                                case 39: // right
+                                        yAngle += 90;
+                                        break;
+                                case 40: // down
+                                        xAngle -= 90;
+                                        break;
+                        };
+                        $("#cube")[0].style.webkitTransform = "rotateX("+xAngle+"deg) rotateY("+yAngle+"deg)";
+                }, false);
+        </script>
+-->
+
+        <!-- Flipped cards -->
+<!--
+        <table align="center" border="0">
+                {% set rank = 0 %}
+
+                {% for activity in activities %}
+                {% set rank = rank + 1 %}
+
+                {% if rank == 1 %}
+                <tr style="height:250px;">
+                {% endif %}
+
+                <td align="center" style="width:250px;">
+                        <div class="flip">
+                                <div class="card">
+                                        <div class="face front">
+                                        <img src="\static\ashu.png" width="80" height="80" align="center" style="margin-top: 40pt;">
+
+                                        {% if activity.userealname %}
+                                                <a href="/view_username/{{activity.username}}">{{activity.realname}}</a> posted a new activity!
+                                        {% else %}
+                                                <a href="/view_username/{{activity.username}}">{{activity.username}}</a> posted a new activity!
+                                        {% endif %}
+
+
+                                        </div>
+
+                                        <div class="face back">
+                                        {% if activity.userealname %}
+                                                {{activity.month}}/{{activity.day}}/{{activity.year}}: <a href="/view_username/{{activity.username}}">{{activity.realname}}</a> earned <strong>{{activity.newpoints}}</strong> points through <a href="/view_activity/{{activity.aid}}">{{activity.activity}}</a>
+                                        {% else %}
+                                                {{activity.month}}/{{activity.day}}/{{activity.year}}: <a href="/view_username/{{activity.username}}">{{activity.username}}</a> earned <strong>{{activity.newpoints}}</strong> points through <a href="/view_activity/{{activity.aid}}">{{activity.activity}}</a>
+                                        {% endif %}
+                                        </div>
+                                </div>
+                        </div>
+                </td>
+
+                {% if rank == 3 %}
+                </tr>
+                {% set rank = 0 %}
+                {% endif %}
+
+                {% endfor %}
+
+                </tr>
+        </table>
+
+        <script language="javascript" type="text/javascript">
+                $('.flip').click(function() {
+                    $(this).find('.card').addClass('flipped').mouseleave(
+                        //function(){
+                        //    $(this).removeClass('flipped');
+                        //}
+                    );
+                    return false;
+                });
+        </script>
+-->
+
+
+<!--
+  <div id="wrapper">
+        <ul id="index_cards">
+            <li id="card-1">
+                <img src="\static\leaderboard_own_group.png" height="50" width="50" alt="Toucan" />
+                <p>Name: Toucan<br />
+                Age: 5<br />
+                Size: 50 cm<br />
+                Weight: 600 g<br />
+                Food: Fruit<br />
+                </p>
+            </li>
+            <li id="card-2">
+                <img src="\static\leaderboard_own_group.png" height="50" width="50" alt="Fox" />
+                <p>Name: Fox<br />
+                Age: 3<br />
+                Size: 70 cm<br />
+                Weight: 5.5 kg<br />
+                Food: Meat<br />
+                </p>
+            </li>
+            <li id="card-3">
+                <img src="\static\leaderboard_own_group.png" height="50" width="50" alt="Dog" />
+                <p>Name: Dog<br />
+                Age: 8<br />
+                Size: 120 cm<br />
+                Weight: 10 kg<br />
+                Food: Bones<br />
+                </p>
+            </li>
+            <li id="card-4">
+                <img src="\static\leaderboard_own_group.png" height="50" width="50" alt="Penguin" />
+                <p>Name: Penguin<br />
+                Age: 20<br />
+                Size: 110 cm<br />
+                Weight: 35 kg<br />
+                Food: Fish<br />
+                </p>
+            </li>
+            <li id="card-5">
+                <img src="\static\leaderboard_own_group.png" height="50" width="50" alt="Lion" />
+                <p>Name: Lion<br />
+                Age: 12<br />
+                Size: 190 cm<br />
+                Weight: 180 kg<br />
+                Food: Meat<br />
+                </p>
+            </li>
+        </ul>
+    </div>
+-->
+
+        <div>
+                {% for message in get_flashed_messages() %}
+                <div class=flash>{{ message }}</div>
+                {% endfor %}
+        </div>
+
+        {% block body %}
+        {% endblock %}
+
+</div>

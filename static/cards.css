@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+/* flip example */
+.flip {
+    width: 180px;
+    height: 180px;
+    position: relative;
+}
+.flip .card.flipped {
+    -webkit-transform: rotatex(-180deg);
+}
+.flip .card {
+    width: 100%;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: 0.5s;
+    background-image: url('owl_background.png');
+}
+.flip .card .face {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-backface-visibility: hidden ;
+    z-index: 1;
+}
+.flip .card .front {
+    z-index: 1;
+    vertical-align: middle;
+    background: white;
+    color: black;
+    cursor: pointer;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0px 0px 5px #aaa;
+	-webkit-box-shadow: 0px 0px 5px #aaa;
+    background-image: url('owl_background.png');
+    background-size: cover;
+/*
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 20px;
+    -moz-border-radius-bottomright: 30px;
+    -moz-border-radius-bottomleft: 0;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 20px;
+    -webkit-border-bottom-right-radius: 30px;
+    -webkit-border-bottom-left-radius: 0;
+*/
+}
+.flip .card .front > img {
+    vertical-align: middle;
+}
+.flip .card .back {
+    -webkit-transform: rotatex(-180deg);
+    background: white;
+    color: black;
+    cursor: pointer;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0px 0px 5px #aaa;
+	-webkit-box-shadow: 0px 0px 5px #aaa;
+    background-image: url('owls_lv3.png');
+    background-size: cover;
+}

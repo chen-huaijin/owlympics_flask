@@ -1,0 +1,171 @@
+<!doctype html>
+<title>OWLympics</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='cube.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='avatar.css') }}">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="static/bootstrap.js"></script>
+
+<!-- rating star -->
+<script src="//code.angularjs.org/1.1.4/angular.js"></script>
+<script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.2.0.js"></script>
+<script src="static/ratingstar/app.js"></script>
+<script src="static/ratingstar/directive.js"></script>
+
+<div class=page>
+
+
+        <h2>OWLympics
+                <img src="\static\owls_branch_LOGO2.png" width="120" height="50" align="right" >
+                <p> </p>
+        </h2>
+
+
+        <!-- Top labels -->
+        <div class=metanav>
+                {% if not session.logged_in %}
+                        <a href="{{ url_for('register') }}">Register</a>
+                        <a>|</a>
+                        <a href="{{ url_for('login') }}">Log in</a>
+                {% else %}
+                        <a href="{{ url_for('profile_home') }}">Profile</a>
+                        <a>|</a>
+                        <a href="{{ url_for('gym') }}">Inventory</a>
+                        <a>|</a>
+                        <a href="{{ url_for('store') }}">OWLympics store</a>
+                        <a>|</a>
+                        <a href="{{ url_for('logout') }}">Log out</a>
+                {% endif %}
+        </div>
+
+
+        <!-- Set of cubes -->
+        <table align="center" border="0">
+                {% set rank = 0 %}
+                {% set cube_id = -1 %}
+
+                {% for activity in activities %}
+
+                        {% set rank = rank + 1 %}
+                        {% set cube_id = cube_id + 1 %}
+
+                        {% if rank == 1 %}
+                        <tr style="height:200px;">
+                        {% endif %}
+
+                        <td align="center" style="width:200px;">
+                                <div id="experiment">
+                                        <div id="cube_{{cube_id}}" class="cubewrapper">
+                                                <!-- top side -->
+                                                <div class="face one">
+                                                </div>
+                                                <!-- front side -->
+                                                <div class="face two">
+                                                        <div class="avatar" style="background-image:
+                                                                url('static/avatar/Accessories/handlebar.png'),
+                                                                url('static/avatar/Hair/the_cure.png'),
+                                                                url('static/avatar/Glasses/goggles.png'),
+                                                                url('static/avatar/Owls/standard_owl_template.png');">
+                                                        </div>
+                                                </div>
+                                                <!-- right side -->
+                                                <div class="face three">
+                                                        <!--
+                                                        <div class="avatar" style="background-image:
+                                                                url('static/avatar/Hair/fro.png'),
+                                                                url('static/avatar/Glasses/pirate patch.png'),
+                                                                url('static/avatar/Owls/pink_owl_template.png');">
+                                                        </div>
+                                                        -->
+                                                </div>
+                                                <!-- back side -->
+                                                <div class="face four">
+                                                        <!--
+                                                        <div class="avatar" style="background-image:
+                                                                url('static/avatar/Hair/mohawk.png'),
+                                                                url('static/avatar/Glasses/nerd glasses.png'),
+                                                                url('static/avatar/Owls/white_owl_template.png');">
+                                                        </div>
+                                                        -->
+                                                </div>
+                                                <!-- left side -->
+                                                <div class="face five">
+                                                        <!--
+                                                        <div class="avatar" style="background-image:
+                                                                url('static/avatar/Hair/elvis.png'),
+                                                                url('static/avatar/Glasses/cyclops laser goggles.png'),
+                                                                url('static/avatar/Owls/blue_owl_template.png');">
+                                                        </div>
+                                                        -->
+                                                </div>
+                                                <!-- bottom side -->
+                                                <div class="face six">
+                                                </div>
+                                        </div>
+                                </div>
+                        </td>
+
+                        {% if rank == 3 %}
+                        </tr>
+                        {% set rank = 0 %}
+                        {% endif %}
+
+                        <script language="javascript" type="text/javascript">
+                                var xAngle_{{cube_id}} = 0, yAngle_{{cube_id}} = 0;
+                                $("#cube_{{cube_id}}").click(function() {
+                                        xAngle_{{cube_id}} += 0;
+                                        yAngle_{{cube_id}} -= 90;
+                                        $("#cube_{{cube_id}}")[0].style.webkitTransform =
+                                        "rotateX("+xAngle_{{cube_id}}+"deg) rotateY("+yAngle_{{cube_id}}+"deg)";
+                                })
+
+                                //document.getElementById('cube').onclick = function() {
+                                //        xAngle_{{cube_id}} += 0;
+                                //        yAngle_{{cube_id}} -= 90;
+                                //        $("#cube_{{cube_id}}")[0].style.webkitTransform =
+                                //        "rotateX("+xAngle_{{cube_id}}+"deg) rotateY("+yAngle_{{cube_id}}+"deg)";
+                                //}
+
+                        </script>
+
+                {% endfor %}
+
+                </tr>
+        </table>
+
+        <script language="javascript" type="text/javascript">
+                var xAngle = 0, yAngle = 0;
+                document.addEventListener('keydown', function(e)
+                {
+                        switch(e.keyCode)
+                        {
+                                case 37: // left
+                                        yAngle -= 90;
+                                        break;
+                                case 38: // up
+                                        xAngle += 90;
+                                        break;
+                                case 39: // right
+                                        yAngle += 90;
+                                        break;
+                                case 40: // down
+                                        xAngle -= 90;
+                                        break;
+                        };
+                        $("#cube_0}")[0].style.webkitTransform = "rotateX("+xAngle+"deg) rotateY("+yAngle+"deg)";
+                }, false);
+        </script>
+
+
+        <div>
+                {% for message in get_flashed_messages() %}
+                <div class=flash>{{ message }}</div>
+                {% endfor %}
+        </div>
+
+        {% block body %}
+        {% endblock %}
+
+</div>

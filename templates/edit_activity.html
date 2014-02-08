@@ -1,0 +1,84 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="edit_activity" action="{{ url_for('submit_edit_activity') }}" method=post>
+      <dl>
+        <p> </p>
+        {% if myactivities %}
+        <table align="center" class="table table-bordered">
+        <tr>
+                {% if session.admin %}
+                <td align="center">id</td>
+                <td align="center" style="width:100px;">Username</td>
+                {% endif %}
+                <td align="center" style="width:100px;">Date</td>
+                <td align="center" style="width:200px;">Activity</td>
+                <td align="center" style="width:50px;">Points</td>
+                <td align="center"></td>
+        </tr>
+        {% endif %}
+
+        {% for myactivity in myactivities %}
+        <tr>
+                {% if session.admin %}
+                <td align="center">{{myactivity.aid}}</td>
+                <td align="center">{{myactivity.username}}</td>
+                {% endif %}
+                <td align="center">{{myactivity.month}}/{{myactivity.day}}/{{myactivity.year}}</td>
+                <td align="center"><a href="/view_activity/{{myactivity.aid}}">{{myactivity.activity}}</td>
+                <td align="center">{{myactivity.newpoints}}</td>
+                {% if session.admin %}
+                <td><input type=button class="btn btn-mini" value=Edit onclick="edit_activity({{myactivity.aid}}, 1);" /></td>
+                <td><input type=button class="btn btn-mini" value=Delete onclick="delete_activity({{myactivity.aid}});" /></td>
+                {% else %}
+                <td><input type=button class="btn btn-mini" value=Edit onclick="edit_activity({{myactivity.aid}}, 0);" /></td>
+                <td><input type=button class="btn btn-mini" value=Delete onclick="delete_activity({{myactivity.aid}});" /></td>
+                {% endif %}
+
+        </tr>
+
+        <!-- These hidden inputs are used to pass the activity id to the server-->
+        <input id="aid" type=hidden name=aid value=-1>
+        <input id="manage" type=hidden name=manage value="None">
+
+        <script language="javascript" type="text/javascript">
+                function edit_activity(aid, admin) {
+                        if (admin) {
+                                var confirmed = confirm("Are you sure you want to edit this activity?");
+                        }
+                        else {
+                                var confirmed = 1;
+                        }
+                        if (confirmed) {
+                                document.getElementById("aid").value = aid;
+                                document.getElementById("manage").value = "edit";
+                                document.getElementById("edit_activity").submit();
+                        }
+                }
+
+                function delete_activity(aid) {
+                        if (confirm("Are you sure you want to delete this activity?")) {
+                                document.getElementById("aid").value = aid;
+                                document.getElementById("manage").value = "delete";
+                                document.getElementById("edit_activity").submit();
+                        }
+                        else {
+                        }
+                }
+        </script>
+        {% endfor %}
+        </table>
+
+        {% if not myactivities %}
+        <dt>You have not reported any activity in this week</dt>
+        {% endif %}
+        
+        <p> </p>
+        <a href="{{ url_for('past_activity') }}">View all my activities in the past weeks </a>
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <h4>Register</h4>
+
+  {% if error %}
+  <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+
+  <form action="{{ url_for('register') }}" onsubmit="return tou_check();" method=post>
+    <dl>
+      <dt>Username:
+      <dd><input type=text name=username>
+      <p> </p>
+      <dt>Password:
+      <dd><input type=password name=password>
+      <p> </p>
+      <dt>Retype password:
+      <dd><input type=password name=repassword>
+      <p> </p>
+      <dt>Email (used to recover your password):
+      <dd><input type=email name=email>
+      <p> </p>
+      <dd>
+      <input type=checkbox id=tou> I agree to the <a href="http://owlympics.rice.edu/terms" target="_blank">Terms of Use</a>
+      <input id="ischecked" type=hidden name=ischecked value="No">
+      <p> </p>
+      <dd><input class="btn btn-mini btn-info" type=submit value=Register>
+
+      <script language="javascript" type="text/javascript">
+                function tou_check() {
+                        if (document.getElementById("tou").checked) {
+                                document.getElementById("ischecked").value = "Yes";
+                        }
+                        else {
+                                document.getElementById("ischecked").value = "No";
+                        }
+                }
+      </script>
+    </dl>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  <h4>Recent activities from all</h4>
+  <ul class=entries>
+  {% for activity in activities %}
+    <li>{{activity.month}}/{{activity.day}}/{{activity.year}}: <strong>{{activity.username}}</strong> earned <strong>{{activity.newpoints}}</strong> points through <strong>{{activity.activity}}</strong>
+  {% else %}
+    <li><em>No one has put any activity so far. Really?</em>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+#container {
+	//margin-top: 0px;
+	position: relative;
+}
+
+#img_container {
+	position: relative;
+	overflow: hidden;
+	width: 100px;
+	margin: 0 auto;
+}
+#img_container_big {
+	position: absolute;
+	overflow: hidden;
+	width: 200px;
+	left: 100px;
+	top: 20px;
+}
+.img_box {
+	position: relative;
+	width: 4000px;
+}
+.img_box img {
+	float: left;
+}
+
+#navigate {
+	text-align: center;
+}

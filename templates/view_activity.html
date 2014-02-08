@@ -1,0 +1,26 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form method=post>
+      <dl>
+
+        <dt>Athlete: <strong>{{thisact.username}}</strong>
+        <p> </p>
+        <dt>Date: <strong>{{thisact.month}}/{{thisact.day}}/{{thisact.year}}</strong>
+        <p> </p>
+        <dt>Activity: <strong>{{thisact.activity}}</strong>
+        <p> </p>
+        <dt>Number of participants: <strong>{{thisact.ppl}}</strong>
+        <p> </p>
+        <dt>Intensity: <strong>{{thisact.low}}</strong> minutes low, <strong>{{thisact.moderate}}</strong> minutes moderate, <strong>{{thisact.high}}</strong> minutes high
+        <p> </p>
+        <dt>Note about this activity: <strong>''{{thisact.note}}''</strong>
+        <p> </p>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="past_activity">
+      <dl>
+        <p> </p>
+        {% if myactivities %}
+        <table align="center" class="table table-bordered">
+        <tr>
+                {% if session.admin %}
+                <td align="center">id</td>
+                <td align="center" style="width:100px;">Username</td>
+                {% endif %}
+                <td align="center" style="width:100px;">Date</td>
+                <td align="center" style="width:200px;">Activity</td>
+                <td align="center" style="width:50px;">Points</td>
+                <td align="center"></td>
+        </tr>
+        {% endif %}
+
+        {% for myactivity in myactivities %}
+        <tr>
+                {% if session.admin %}
+                <td align="center">{{myactivity.aid}}</td>
+                <td align="center">{{myactivity.username}}</td>
+                {% endif %}
+                <td align="center">{{myactivity.month}}/{{myactivity.day}}/{{myactivity.year}}</td>
+                <td align="center"><a href="/view_activity/{{myactivity.aid}}">{{myactivity.activity}}</a></td>
+                <td align="center">{{myactivity.newpoints}}</td>
+                <td><a href="/view_activity/{{myactivity.aid}}">View</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+
+        {% if not myactivities %}
+        <dt>You have not reported any activity in past weeks</dt>
+        {% endif %}
+        
+        <p> </p>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+        
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

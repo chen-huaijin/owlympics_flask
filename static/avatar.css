@@ -1,0 +1,11 @@
+﻿.avatar {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    //background-image: url('goggles.png'),
+                      //url('orange_owl_template.png');
+                      //url("/avatar/Owls/orange_owl_template.png") center,
+                      //url("/avatar/Glasses/goggles.png") 0px 0px,
+                      //url("/avatar/Hair/the_cure.png") 0px 0px;
+    background-size: cover;
+}

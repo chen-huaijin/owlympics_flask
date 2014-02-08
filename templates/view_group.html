@@ -1,0 +1,61 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+    <form id="view_group">
+      <dl>
+
+        <p> </p>
+        <dt>Athletes in group <strong>{{groupname}}</strong>:
+        <p> </p>
+        <table align="center" class="table table-bordered">
+        <tr>
+                <td align="center" style="width:50px;">Rank</td>
+                <td align="center" style="width:100px;">User</td>
+                <td align="center" style="width:50px;">Level</td>
+                <td align="center" style="width:100px;">Weekly points</td>
+                <td align="center" style="width:100px;">Achievements</td>
+        </tr>
+        {% for point in points %}
+                {% set rank = loop.index %}
+                {% for user in users %}
+                        {% if user.username == point.username %}
+                                <tr>
+                                        <td align="center">{{rank}}</td>
+                                        {% if user.userealname %}
+                                        <td align="center"><a href="/view_username/{{point.username}}">{{user.realname}}</a></td>
+                                        {% else %}
+                                        <td align="center"><a href="/view_username/{{point.username}}">{{user.username}}</a></td>
+                                        {% endif %}
+                                        <td align="center">{{point.level}}</td>
+                                        <td align="center">{{point.point}}</td>
+                                        <td>
+                                        {% if point.level >= 3 %}
+                                                {% if user.paid %}
+                                                <img src="\static\lv3_gold.png" width="16" height="16" Title="Registered, Level 3">
+                                                {% else %}
+                                                <img src="\static\lv3_white.png" width="16" height="16" Title="Level 3">
+                                                {% endif %}
+                                        {% endif %}
+                                        {% if point.level >= 7 %}
+                                                {% if user.paid %}
+                                                <img src="\static\lv7_gold.png" width="16" height="16" Title="Registered, Level 7">
+                                                {% else %}
+                                                <img src="\static\lv7_white.png" width="16" height="16" Title="Level 7">
+                                                {% endif %}
+                                        {% endif %}
+                                        </td>
+                                </tr>
+                        {% endif %}
+                {% endfor %}
+        {% endfor %}
+        </table>
+
+        <p> </p>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+
+      </dl>
+    </form>
+  {% endif %}
+
+{% endblock %}

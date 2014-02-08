@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h4>Login</h4>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('login') }}" method=post>
+    <dl>
+      <dt>Username:
+      <dd><input type=text name=username>
+      <p> </p>
+      <dt>Password:
+      <dd><input type=password name=password>
+      <p> </p>
+      <dd><input type=submit class="btn btn-mini btn-info" value=Login>
+    </dl>
+  </form>
+  <p> </p>
+  <dt>Forgot your username/password? <a href="{{ url_for('recover') }}">Click here</a>
+{% endblock %}

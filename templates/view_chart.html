@@ -1,0 +1,318 @@
+{% extends "profile.html" %}
+{% block profile %}
+
+  {% if session.logged_in %}
+  <form id="view_chart">
+
+        <dl>
+                <dt>Performance in this week:
+                <p> </p>
+                <table border="0" align="center" style="table-layout:fixed;">
+                <tr>
+                <td align="center" style="width:400px;">You</td>
+                <td align="center" style="width:400px;">{{username}}</td>
+                </tr>
+                
+                <tr>
+                <td align="right" style="width:400px;">
+                <div id="level_gauge_me"></div>
+                </td>
+                <td align="right" style="width:400px;">
+                <div id="level_gauge"></div>
+                </td>
+                </tr>
+                </table>
+
+                <br />
+                <dt>Performance in past weeks:
+                <p> </p>
+
+                <table align="center" class="table table-bordered">
+                        <tr>
+                        <td align="center" style="width:100px;"> </td>
+                        <td align="center" style="width:200px;">Total points earned</td>
+                        <td align="center" style="width:250px;">Average points in last 4 weeks</td>
+                        <td align="center" style="width:250px;">Max points in last 4 weeks</td>
+                        </tr>
+                        <tr>
+                        <td align="center" style="width:100px;">You</td>
+                        <td align="center" style="width:200px;">{{total_points_week_me}}</td>
+                        <td align="center" style="width:250px;">{{avg_points_week_me}}</td>
+                        <td align="center" style="width:250px;">{{max_points_week_me}}</td>
+                        </tr>
+                        <tr>
+                        <td align="center" style="width:100px;">{{username}}</td>
+                        <td align="center" style="width:200px;">{{total_points_week}}</td>
+                        <td align="center" style="width:250px;">{{avg_points_week}}</td>
+                        <td align="center" style="width:250px;">{{max_points_week}}</td>
+                        </tr>
+                </table>
+
+                <br />
+                <dt>Points earned in this week in comparison to last 4 weeks:
+                <div id="points_line"></div>
+
+                <br />
+                <dt>Workout intensity for this week in comparison to last 4 weeks:
+                <div id="intensity_column"></div>
+
+                <br />
+                <table border="0" align="center" style="table-layout:fixed;">
+                <tr>
+                <td align="left" style="width:300px;">
+                <dt>How social are your activities:
+                <div id="social_points_pie_me"></div>
+                </td>
+
+                <td align="left" style="width:300px;">
+                <dt>How social are {{username}}'s activities:
+                <div id="social_points_pie"></div>
+                </td>
+                </tr>
+                </table>
+
+                <br />
+                <dt>Total points earned at each weekday:
+                <div id="points_weekday_column"></div>
+
+                <br />
+                <dt>Average intensity for each weekday (1.0 = low, 2.0 = moderate, 3.0 = high):
+                <div id="intensity_weekday_column"></div>
+
+                <!-- Inactive charts -->
+                <div id="invalid"></div>
+
+        </dl>
+
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+
+              // Load the Visualization API and the piechart package.
+              google.load('visualization', '1.0', {'packages':['corechart']});
+              google.load('visualization', '1', {packages:['gauge']});
+              google.load("visualization", "1", {packages:["imagebarchart"]});
+
+              // Set a callback to run when the Google Visualization API is loaded.
+              google.setOnLoadCallback(drawChart);
+
+              // Draw the charts
+              function drawChart()
+              {
+
+                // Level gauge
+                var data = google.visualization.arrayToDataTable([
+                  ['Label', 'Value'],
+                  ['', {{points}}],
+                ]);
+                var options = {
+                  greenColor: '#FF0000',
+                  yellowColor: '#FFA500',
+                  redColor: '#008000',
+                  width: 200, height: 200,
+                  min: 0, max: 600,
+                  greenFrom: 0, greenTo: 200,
+                  yellowFrom: 200, yellowTo: 400,
+                  redFrom: 400, redTo: 600,
+                  majorTicks: ['', 'level{{level}}', 'level{{level+1}}', ''], minorTicks: 10
+                };
+                var chart = new google.visualization.Gauge(document.getElementById('level_gauge'));
+                chart.draw(data, options);
+
+
+                // Level gauge for me
+                var data = google.visualization.arrayToDataTable([
+                  ['Label', 'Value'],
+                  ['', {{points_me}}],
+                ]);
+                var options = {
+                  greenColor: '#FF0000',
+                  yellowColor: '#FFA500',
+                  redColor: '#008000',
+                  width: 200, height: 200,
+                  min: 0, max: 600,
+                  greenFrom: 0, greenTo: 200,
+                  yellowFrom: 200, yellowTo: 400,
+                  redFrom: 400, redTo: 600,
+                  majorTicks: ['', 'level{{level_me}}', 'level{{level_me+1}}', ''], minorTicks: 10
+                };
+                var chart = new google.visualization.Gauge(document.getElementById('level_gauge_me'));
+                chart.draw(data, options);
+
+
+                // Intensity distribution in this week
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Intensity');
+                data.addColumn('number', 'Minutes');
+                data.addRows([
+                  ['Low', {{low_week[tweek]}}],
+                  ['Moderate', {{moderate_week[tweek]}}],
+                  ['High', {{high_week[tweek]}}]
+                ]);
+                var options = {'title':'Intensity distribution', 'width':400, 'height':400};
+                var chart = new google.visualization.PieChart(document.getElementById('invalid'));
+                //chart.draw(data, options);
+
+
+                 // Points in past four weeks
+                var data = google.visualization.arrayToDataTable([
+                  ['Week',  'You', '{{username}}'],
+                  ['{{weeks[tweek-4].fm}}/{{weeks[tweek-4].fd}}-{{weeks[tweek-4].lm}}/{{weeks[tweek-4].ld}}',
+                  {{points_week_me[tweek-4]}},{{points_week[tweek-4]}}],
+                  ['{{weeks[tweek-3].fm}}/{{weeks[tweek-3].fd}}-{{weeks[tweek-3].lm}}/{{weeks[tweek-3].ld}}',
+                  {{points_week_me[tweek-3]}},{{points_week[tweek-3]}}],
+                  ['{{weeks[tweek-2].fm}}/{{weeks[tweek-2].fd}}-{{weeks[tweek-2].lm}}/{{weeks[tweek-2].ld}}',
+                  {{points_week_me[tweek-2]}},{{points_week[tweek-2]}}],
+                  ['{{weeks[tweek-1].fm}}/{{weeks[tweek-1].fd}}-{{weeks[tweek-1].lm}}/{{weeks[tweek-1].ld}}',
+                  {{points_week_me[tweek-1]}},{{points_week[tweek-1]}}],
+                  ['{{weeks[tweek-0].fm}}/{{weeks[tweek-0].fd}}-{{weeks[tweek-0].lm}}/{{weeks[tweek-0].ld}}',
+                  {{points_week_me[tweek-0]}},{{points_week[tweek-0]}}]
+                ]);
+                var options = {
+                  width: 600,
+                  height: 200,
+                  title: '',
+                  //hAxis: {title: 'Week', titleTextStyle: {color: 'black'}},
+                  vAxis: {title: 'Points', titleTextStyle: {color: 'black'}}
+                };
+                var chart = new google.visualization.LineChart(document.getElementById('points_line'));
+                chart.draw(data, options);
+
+
+                // Intensity distribution in past four weeks
+                var data = google.visualization.arrayToDataTable([
+                  ['Week', 'Low', 'Moderate', 'High'],
+                  ['{{weeks[tweek-4].fm}}/{{weeks[tweek-4].fd}}-{{weeks[tweek-4].lm}}/{{weeks[tweek-4].ld}}',
+                  {{low_week[tweek-4]}}, {{moderate_week[tweek-4]}}, {{high_week[tweek-4]}}],
+                  ['{{weeks[tweek-3].fm}}/{{weeks[tweek-3].fd}}-{{weeks[tweek-3].lm}}/{{weeks[tweek-3].ld}}',
+                  {{low_week[tweek-3]}}, {{moderate_week[tweek-3]}}, {{high_week[tweek-3]}}],
+                  ['{{weeks[tweek-2].fm}}/{{weeks[tweek-2].fd}}-{{weeks[tweek-2].lm}}/{{weeks[tweek-2].ld}}',
+                  {{low_week[tweek-2]}}, {{moderate_week[tweek-2]}}, {{high_week[tweek-2]}}],
+                  ['{{weeks[tweek-1].fm}}/{{weeks[tweek-1].fd}}-{{weeks[tweek-1].lm}}/{{weeks[tweek-1].ld}}',
+                  {{low_week[tweek-1]}}, {{moderate_week[tweek-1]}}, {{high_week[tweek-1]}}],
+                  ['{{weeks[tweek-0].fm}}/{{weeks[tweek-0].fd}}-{{weeks[tweek-0].lm}}/{{weeks[tweek-0].ld}}',
+                  {{low_week[tweek-0]}}, {{moderate_week[tweek-0]}}, {{high_week[tweek-0]}}]
+                ]);
+                var options = {
+                  width: 600,
+                  height: 200,
+                  title: '',
+                  //hAxis: {title: 'Week', titleTextStyle: {color: 'black'}},
+                  vAxis: {title: 'Minutes', titleTextStyle: {color: 'black'}}
+                };
+                //var chart = new google.visualization.ColumnChart(document.getElementById('intensity_column'));
+                var chart = new google.visualization.ColumnChart(document.getElementById('invalid'));
+                //chart.draw(data, options);
+
+
+                // How social are your activities
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'ppl');
+                data.addColumn('number', 'Points');
+                data.addRows([
+                  ['0 ppl', {{social_me[0]}}],
+                  ['1 ppl', {{social_me[1]}}],
+                  ['2 ppl', {{social_me[2]}}],
+                  ['3 ppl', {{social_me[3]}}],
+                  ['4 ppl', {{social_me[4]}}],
+                  ['5 and more ppl', {{social_me[5]}}]
+                ]);
+                var options = {'title':'', 'width':300, 'height':200};
+                var chart = new google.visualization.PieChart(document.getElementById('social_points_pie_me'));
+                chart.draw(data, options);
+
+
+                // How social are username's activities
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'ppl');
+                data.addColumn('number', 'Points');
+                data.addRows([
+                  ['0 ppl', {{social[0]}}],
+                  ['1 ppl', {{social[1]}}],
+                  ['2 ppl', {{social[2]}}],
+                  ['3 ppl', {{social[3]}}],
+                  ['4 ppl', {{social[4]}}],
+                  ['5 and more ppl', {{social[5]}}]
+                ]);
+                var options = {'title':'', 'width':300, 'height':200};
+                var chart = new google.visualization.PieChart(document.getElementById('social_points_pie'));
+                chart.draw(data, options);
+                
+
+               // Total points for each weekday
+                var data = google.visualization.arrayToDataTable([
+                  ['Weekday', 'You', '{{username}}'],
+                  ['Mon', {{points_weekday_me[1]}}, {{points_weekday[1]}}],
+                  ['Tues', {{points_weekday_me[2]}}, {{points_weekday[2]}}],
+                  ['Wed', {{points_weekday_me[3]}}, {{points_weekday[3]}}],
+                  ['Thur', {{points_weekday_me[4]}}, {{points_weekday[4]}}],
+                  ['Fri', {{points_weekday_me[5]}}, {{points_weekday[5]}}],
+                  ['Sat', {{points_weekday_me[6]}}, {{points_weekday[6]}}],
+                  ['Sun', {{points_weekday_me[0]}}, {{points_weekday[0]}}]
+                ]);
+                var options = {
+                  width: 600,
+                  height: 200,
+                  vAxis: {title: 'Points', titleTextStyle: {color: 'black'}}
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById('points_weekday_column'));
+                chart.draw(data, options);
+
+
+                // Average intensity for each weekday
+                var data = google.visualization.arrayToDataTable([
+                  ['Weekday', 'You', '{{username}}'],
+                  ['Mon', {{intensity_weekday_me[1]}}, {{intensity_weekday[1]}}],
+                  ['Tues', {{intensity_weekday_me[2]}}, {{intensity_weekday[2]}}],
+                  ['Wed', {{intensity_weekday_me[3]}}, {{intensity_weekday[3]}}],
+                  ['Thur', {{intensity_weekday_me[4]}}, {{intensity_weekday[4]}}],
+                  ['Fri', {{intensity_weekday_me[5]}}, {{intensity_weekday[5]}}],
+                  ['Sat', {{intensity_weekday_me[6]}}, {{intensity_weekday[6]}}],
+                  ['Sun', {{intensity_weekday_me[0]}}, {{intensity_weekday[0]}}]
+                ]);
+                var options = {
+                  width: 600,
+                  height: 200,
+                  vAxis: {title: 'Intensity', titleTextStyle: {color: 'black'}, minValue: 0.0, maxValue: 3.0}
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById('intensity_weekday_column'));
+                chart.draw(data, options);
+
+
+                // Points earned by each of your activities
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Activity');
+                data.addColumn('number', 'Points');
+                {% for activity in activity_type %}
+                        data.addRows([
+                          ['{{activity.name}}', {{activity.points}}]
+                        ]);
+                {% endfor %}
+                var options = {'title':'', 'width':300, 'height':200};
+                var chart = new google.visualization.PieChart(document.getElementById('invalid'));
+                //chart.draw(data, options);
+
+
+                // Number of times reported for each of your activities
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Activity');
+                data.addColumn('number', 'Number of times');
+                {% for activity in activity_type %}
+                        data.addRows([
+                          ['{{activity.name}}', {{activity.times}}]
+                        ]);
+                {% endfor %}
+                var options = {'title':'', 'width':300, 'height':200};
+                var chart = new google.visualization.PieChart(document.getElementById('invalid'));
+                //chart.draw(data, options);
+
+              }
+        </script>
+
+        <p> </p>
+        <input type=button class="btn btn-mini" value=Back onClick="history.go(-1);return true;">
+
+  </form>
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,39 @@
+﻿#experiment {
+    -webkit-perspective: 800;
+    -webkit-perspective-origin: 50% 200px;
+}
+
+.cubewrapper {
+    position: relative;
+    margin: 0 auto;
+    height: 160px;
+    width: 160px;
+    -webkit-transition: -webkit-transform 1s linear;
+    -webkit-transform-style: preserve-3d;
+}
+
+.face {
+    position: absolute;
+    height: 160px;
+    width: 160px;
+    padding: 0px;
+}
+
+.cubewrapper .one {
+    -webkit-transform: rotateX(90deg) translateZ(80px);
+}
+.cubewrapper .two {
+    -webkit-transform: translateZ(80px);
+}
+.cubewrapper .three {
+    -webkit-transform: rotateY(90deg) translateZ(80px);
+}
+.cubewrapper .four {
+    -webkit-transform: rotateY(180deg) translateZ(80px);
+}
+.cubewrapper .five {
+    -webkit-transform: rotateY(-90deg) translateZ(80px);
+}
+.cubewrapper .six {
+    -webkit-transform: rotateX(-90deg) translateZ(80px) rotate(180deg);
+}
