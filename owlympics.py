@@ -1481,14 +1481,35 @@ def mobile_submit():
 
     # Retrieve the information from the request
     activity = request.form['exercise']
-    duration = request.form['time']
-    lowintensity = request.form['lowintensity']
-    mediumintensity = request.form['mediumintensity']
-    highintensity = request.form['highintensity']
-    partners = request.form['partners']
-    rating = request.form['rating']
+    # duration = request.form['time']
+    low_str = request.form['lowintensity']
+    moderate_str = request.form['moderateintensity']
+    high_str = request.form['highintensity']
+    # partners = request.form['partners']
+    # rating = request.form['rating']
     date = request.form['date']
-    uuid = request.form['uuid']
+    uuid_str = request.form['uuid']
+    ppl_str = request.form['social']
+    note_str = request.form['note']
+    rate_str = request.form['rate']
+    hour_str = request.form['hour']
+    min_str = request.form['min']
+    sec_str = request.form['sec']
+    happpiness_str = request.form['happy']
+    activeness_str = request.form['activeness']
+    
+
+    low = float(low_str)
+    moderate = float(moderate_str)
+    high = float(high_str)
+    ppl = int(ppl_str)
+    hour = int(hour_str)
+    minute = int(min_str)
+    second = int(sec_str)
+    happiness = int(happpiness_str)
+    activeness = int(activeness_str)
+    if len(note) == 0:
+        note = ' '
 
     # Get username from mobileid
     cur = db.execute('select username from profiles where mobileid = ?', [uuid])
@@ -1504,16 +1525,7 @@ def mobile_submit():
     year = int(td.year)
     month = int(td.month)
     day = int(td.day)
-    low = 0
-    moderate = 0
-    high = 0
-    if intensity == 'Low':
-        low = float(duration)
-    if intensity == 'Moderate':
-        moderate = float(duration)
-    if intensity == 'High':
-        high = float(duration)
-    ppl = partners
+    # ppl = partners
     note = ' '
 
     # Calculate points for this activity
@@ -1527,8 +1539,12 @@ def mobile_submit():
         newpoints = newpoints + 10
 
     # Add activity to the db
-    db.execute('insert into activities (username, year, month, day, activity, ppl, low, moderate, high, newpoints, isthisweek, note) values (?,?,?,?,?,?,?,?,?,?,?,?)',
-                [username, year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, 1, note])
+    # db.execute('insert into activities (username, year, month, day, activity, ppl, low, moderate, high, newpoints, isthisweek, note) values (?,?,?,?,?,?,?,?,?,?,?,?)',
+    #             [username, year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, 1, note])
+    db.execute('insert into activities (username, year, month, day, activity, ppl, low, moderate, high, newpoints, \
+                       isthisweek, note, rate, hour, minute, second, happiness, activeness) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', \
+                       [session.get('username'), year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, \
+                        1, note, rate, hour, minute, second, happiness, activeness])
     db.commit()
     msg = 'Activity submission succeeded'
 
