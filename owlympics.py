@@ -1487,7 +1487,10 @@ def mobile_submit():
     high_str = request.form['highintensity']
     # partners = request.form['partners']
     # rating = request.form['rating']
-    date = request.form['date']
+    # date = request.form['date']
+    year_str = request.form['year']
+    month_str = request.form['mon']
+    day_str = request.form['day']
     uuid_str = request.form['uuid']
     ppl_str = request.form['social']
     note_str = request.form['note']
@@ -1521,10 +1524,12 @@ def mobile_submit():
         username = entry['username']
     
     # Information about this activity
-    td = date.today()
-    year = int(td.year)
-    month = int(td.month)
-    day = int(td.day)
+    # td = date.today()
+    # year = int(td.year)
+    year = int(year_str)
+    month = int(month_str)
+    day = int(day_str)
+    # day = int(td.day)
     # ppl = partners
     note = ' '
 
