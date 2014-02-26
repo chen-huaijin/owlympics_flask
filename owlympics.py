@@ -23,7 +23,7 @@ import prepare_data
 
 
 # Configuration
-DATABASE = 'owlympics_test.db'
+DATABASE = '/home/owlympics_test.db'
 SECRET_KEY = 'development key'
 DEBUG = True
 USERNAME = 'admin'
@@ -1480,7 +1480,7 @@ def mobile_submit():
     db = get_db()
 
     # Retrieve the information from the request
-    activity = request.form['exercise']
+    activity = request.form['activity']
     # duration = request.form['time']
     low_str = request.form['lowintensity']
     moderate_str = request.form['moderateintensity']
@@ -1501,6 +1501,8 @@ def mobile_submit():
     happpiness_str = request.form['happy']
     activeness_str = request.form['activeness']
     
+    msg_recev =  activity + ' ' + low_str + ' ' + moderate_str + ' ' + high_str + ' ' + year_str + ' ' + month_str +  ' ' + day_str + ' ' + uuid_str +  ' ' + ppl_str + ' ' + note_str +  ' ' + rate_str + ' ' + hour_str +  ' ' + min_str + ' ' + sec_str + ' ' + happpiness_str + ' ' + activeness_str
+    
 
     low = float(low_str)
     moderate = float(moderate_str)
@@ -1511,6 +1513,9 @@ def mobile_submit():
     second = int(sec_str)
     happiness = int(happpiness_str)
     activeness = int(activeness_str)
+    note = note_str
+    uuid = uuid_str
+    rate = rate_str
     if len(note) == 0:
         note = ' '
 
@@ -1543,13 +1548,18 @@ def mobile_submit():
     if ppl > 0:
         newpoints = newpoints + 10
 
+    # return str(year) + str(month) + str(day)
     # Add activity to the db
     # db.execute('insert into activities (username, year, month, day, activity, ppl, low, moderate, high, newpoints, isthisweek, note) values (?,?,?,?,?,?,?,?,?,?,?,?)',
     #             [username, year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, 1, note])
     db.execute('insert into activities (username, year, month, day, activity, ppl, low, moderate, high, newpoints, \
                        isthisweek, note, rate, hour, minute, second, happiness, activeness) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', \
-                       [session.get('username'), year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, \
+                       [username, year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, \
                         1, note, rate, hour, minute, second, happiness, activeness])
+    list_var = [username, year, month, day, activity, ppl, int(low), int(moderate), int(high), newpoints, \
+                        1, note, rate, hour, minute, second, happiness, activeness]
+    msg_debug = 'received from phone ' + msg_recev + ' submit to db ' +str(list_var).strip('[]')
+    return msg_debug
     db.commit()
     msg = 'Activity submission succeeded'
 
@@ -1875,4 +1885,4 @@ def check_realname(name):
 if __name__ == '__main__':
     # init_db()
     app.debug = False
-    app.run(host='0.0.0.0', port = 80)
+    app.run(host='0.0.0.0', port = 81)
